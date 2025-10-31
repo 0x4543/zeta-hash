@@ -1,23 +1,31 @@
-# zeta-hash
+# ZetaHash
 
-Lightweight CLI and library for hashing strings with multiple algorithms.
+Lightweight CLI and library for hashing strings, files, and generating random salts with multiple algorithms.
 
 ## Features
-- SHA256
-- Keccak256
-- Blake3
+- SHA256, Keccak256, Blake3 for strings
+- SHA256, Keccak256, Blake3 for files
+- Generate random salts of specified length
 
 ## Usage
 
+### Hash a string
 ```bash
-# SHA256
 zeta-hash sha256 "hello world"
-
-# Keccak256
 zeta-hash keccak256 "hello world"
-
-# Blake3
 zeta-hash blake3 "hello world"
+```
+
+### Hash a file
+```bash
+zeta-hash file path/to/file.txt sha256
+zeta-hash file path/to/file.txt keccak256
+zeta-hash file path/to/file.txt blake3
+```
+
+### Generate a random salt
+```bash
+zeta-hash salt 16  # generates a 16-character random salt
 ```
 
 ## Example Output
@@ -28,3 +36,4 @@ zeta-hash sha256 "hello"
 
 ## License
 MIT
+
