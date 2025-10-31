@@ -1,5 +1,5 @@
 use clap::{Parser, Subcommand};
-use zeta_hash::{hash_sha256, hash_keccak256, hash_blake3, FileHasher};
+use zeta_hash::{hash_sha256, hash_keccak256, hash_blake3, FileHasher, random_salt::generate_salt};
 
 #[derive(Parser)]
 #[command(name = "zeta-hash", version, about = "CLI tool for hashing strings and files")]
@@ -14,6 +14,7 @@ enum Commands {
     Keccak256 { input: String },
     Blake3 { input: String },
     File { path: String, algo: String },
+    Salt { length: usize },
 }
 
 fn main() {
@@ -38,5 +39,6 @@ fn main() {
                 Err(e) => println!("Error: {}", e),
             }
         }
+        Commands::Salt { length } => println!("{}", generate_salt(length)),
     }
 }
