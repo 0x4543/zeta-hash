@@ -1,5 +1,5 @@
 use sha2::{Digest, Sha256};
-use tiny_keccak::Keccak;
+use tiny_keccak::{Hasher, Keccak};
 use blake3;
 use hex;
 
@@ -11,8 +11,8 @@ pub fn hash_sha256(input: &str) -> String {
 
 pub fn hash_keccak256(input: &str) -> String {
     let mut keccak = Keccak::v256();
-    let mut output = [0u8; 32];
     keccak.update(input.as_bytes());
+    let mut output = [0u8; 32];
     keccak.finalize(&mut output);
     hex::encode(output)
 }

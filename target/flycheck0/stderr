@@ -1,5 +1,5 @@
-   0.016069000s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="zeta_hash"}: cargo::core::compiler::fingerprint: fingerprint error for zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash)/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("zeta_hash", ["lib"], "/Users/denagain/Desktop/GitHub/zeta-hash/src/lib.rs", Edition2021) }
-   0.016090500s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="zeta_hash"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/denagain/Desktop/GitHub/zeta-hash/target/debug/.fingerprint/zeta-hash-c8279b18ba28eec7/lib-zeta_hash`
+   0.104205292s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="zeta_hash"}: cargo::core::compiler::fingerprint: fingerprint error for zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash)/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("zeta_hash", ["lib"], "/Users/denagain/Desktop/GitHub/zeta-hash/src/lib.rs", Edition2021) }
+   0.104756292s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="zeta_hash"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/denagain/Desktop/GitHub/zeta-hash/target/debug/.fingerprint/zeta-hash-c8279b18ba28eec7/lib-zeta_hash`
 
 Caused by:
     No such file or directory (os error 2)
@@ -23,8 +23,8 @@ Stack backtrace:
   15: std::rt::lang_start::<()>::{closure#0}
   16: std::rt::lang_start_internal
   17: _main
-   0.019436500s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="zeta_hash"}: cargo::core::compiler::fingerprint: fingerprint error for zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash)/Check { test: true }/TargetInner { name_inferred: true, ..: lib_target("zeta_hash", ["lib"], "/Users/denagain/Desktop/GitHub/zeta-hash/src/lib.rs", Edition2021) }
-   0.019443834s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="zeta_hash"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/denagain/Desktop/GitHub/zeta-hash/target/debug/.fingerprint/zeta-hash-a02abca4413b70aa/test-lib-zeta_hash`
+   0.125911625s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="zeta_hash"}: cargo::core::compiler::fingerprint: fingerprint error for zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash)/Check { test: true }/TargetInner { name_inferred: true, ..: lib_target("zeta_hash", ["lib"], "/Users/denagain/Desktop/GitHub/zeta-hash/src/lib.rs", Edition2021) }
+   0.125920125s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="zeta_hash"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/denagain/Desktop/GitHub/zeta-hash/target/debug/.fingerprint/zeta-hash-a02abca4413b70aa/test-lib-zeta_hash`
 
 Caused by:
     No such file or directory (os error 2)
@@ -48,8 +48,8 @@ Stack backtrace:
   15: std::rt::lang_start::<()>::{closure#0}
   16: std::rt::lang_start_internal
   17: _main
-   0.019667125s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="cli"}: cargo::core::compiler::fingerprint: fingerprint error for zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash)/Check { test: false }/TargetInner { name: "cli", doc: true, ..: with_path("/Users/denagain/Desktop/GitHub/zeta-hash/src/bin/cli.rs", Edition2021) }
-   0.019670584s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="cli"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/denagain/Desktop/GitHub/zeta-hash/target/debug/.fingerprint/zeta-hash-b0fda8ed46d6997f/bin-cli`
+   0.126169000s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="cli"}: cargo::core::compiler::fingerprint: fingerprint error for zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash)/Check { test: false }/TargetInner { name: "cli", doc: true, ..: with_path("/Users/denagain/Desktop/GitHub/zeta-hash/src/bin/cli.rs", Edition2021) }
+   0.126173042s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="cli"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/denagain/Desktop/GitHub/zeta-hash/target/debug/.fingerprint/zeta-hash-b0fda8ed46d6997f/bin-cli`
 
 Caused by:
     No such file or directory (os error 2)
@@ -73,8 +73,8 @@ Stack backtrace:
   15: std::rt::lang_start::<()>::{closure#0}
   16: std::rt::lang_start_internal
   17: _main
-   0.019847709s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="cli"}: cargo::core::compiler::fingerprint: fingerprint error for zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash)/Check { test: true }/TargetInner { name: "cli", doc: true, ..: with_path("/Users/denagain/Desktop/GitHub/zeta-hash/src/bin/cli.rs", Edition2021) }
-   0.019850584s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="cli"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/denagain/Desktop/GitHub/zeta-hash/target/debug/.fingerprint/zeta-hash-03dad9e2feef5fc6/test-bin-cli`
+   0.126350375s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="cli"}: cargo::core::compiler::fingerprint: fingerprint error for zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash)/Check { test: true }/TargetInner { name: "cli", doc: true, ..: with_path("/Users/denagain/Desktop/GitHub/zeta-hash/src/bin/cli.rs", Edition2021) }
+   0.126353583s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="cli"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/denagain/Desktop/GitHub/zeta-hash/target/debug/.fingerprint/zeta-hash-03dad9e2feef5fc6/test-bin-cli`
 
 Caused by:
     No such file or directory (os error 2)
@@ -98,8 +98,8 @@ Stack backtrace:
   15: std::rt::lang_start::<()>::{closure#0}
   16: std::rt::lang_start_internal
   17: _main
-   0.020023042s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="env"}: cargo::core::compiler::fingerprint: fingerprint error for zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash)/Check { test: false }/TargetInner { name: "env", doc: true, ..: with_path("/Users/denagain/Desktop/GitHub/zeta-hash/src/bin/env.rs", Edition2021) }
-   0.020025792s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="env"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/denagain/Desktop/GitHub/zeta-hash/target/debug/.fingerprint/zeta-hash-81b63df4b73c00f3/bin-env`
+   0.126516583s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="env"}: cargo::core::compiler::fingerprint: fingerprint error for zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash)/Check { test: false }/TargetInner { name: "env", doc: true, ..: with_path("/Users/denagain/Desktop/GitHub/zeta-hash/src/bin/env.rs", Edition2021) }
+   0.126519667s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="env"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/denagain/Desktop/GitHub/zeta-hash/target/debug/.fingerprint/zeta-hash-81b63df4b73c00f3/bin-env`
 
 Caused by:
     No such file or directory (os error 2)
@@ -123,8 +123,8 @@ Stack backtrace:
   15: std::rt::lang_start::<()>::{closure#0}
   16: std::rt::lang_start_internal
   17: _main
-   0.020209959s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="env"}: cargo::core::compiler::fingerprint: fingerprint error for zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash)/Check { test: true }/TargetInner { name: "env", doc: true, ..: with_path("/Users/denagain/Desktop/GitHub/zeta-hash/src/bin/env.rs", Edition2021) }
-   0.020212625s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="env"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/denagain/Desktop/GitHub/zeta-hash/target/debug/.fingerprint/zeta-hash-154e266b4a70075b/test-bin-env`
+   0.126674125s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="env"}: cargo::core::compiler::fingerprint: fingerprint error for zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash)/Check { test: true }/TargetInner { name: "env", doc: true, ..: with_path("/Users/denagain/Desktop/GitHub/zeta-hash/src/bin/env.rs", Edition2021) }
+   0.126677000s  INFO prepare_target{force=false package_id=zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash) target="env"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/denagain/Desktop/GitHub/zeta-hash/target/debug/.fingerprint/zeta-hash-154e266b4a70075b/test-bin-env`
 
 Caused by:
     No such file or directory (os error 2)
@@ -149,6 +149,6 @@ Stack backtrace:
   16: std::rt::lang_start_internal
   17: _main
     Checking zeta-hash v0.1.0 (/Users/denagain/Desktop/GitHub/zeta-hash)
-error: could not compile `zeta-hash` (lib test) due to 2 previous errors
+error: could not compile `zeta-hash` (bin "cli") due to 1 previous error
 warning: build failed, waiting for other jobs to finish...
-error: could not compile `zeta-hash` (lib) due to 2 previous errors
+error: could not compile `zeta-hash` (bin "cli" test) due to 1 previous error
