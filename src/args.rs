@@ -1,17 +1,11 @@
-use clap::{Parser, Subcommand, ValueEnum};
+use clap::{Parser, Subcommand};
+use crate::types::Algorithm;
 
 #[derive(Parser)]
 #[command(name = "zeta-hash", version, about = "CLI tool for hashing strings and files")]
 pub struct Cli {
     #[command(subcommand)]
     pub cmd: Commands,
-}
-
-#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
-pub enum Algorithm {
-    Sha256,
-    Keccak256,
-    Blake3,
 }
 
 #[derive(Subcommand)]
