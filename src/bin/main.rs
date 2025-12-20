@@ -1,6 +1,6 @@
 use clap::Parser;
-use zeta_hash::args::{Cli, Commands, Algorithm};
-use zeta_hash::{hash_sha256, hash_keccak256, hash_blake3, FileHasher, generate_salt};
+use zeta_hash::args::{Cli, Commands};
+use zeta_hash::{hash_sha256, hash_keccak256, hash_blake3, FileHasher, generate_salt, Algorithm};
 
 fn main() {
     let cli = Cli::parse();
