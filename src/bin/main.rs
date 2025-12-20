@@ -30,8 +30,14 @@ enum Commands {
 
 fn main() {
     let cli = Cli::parse();
+    if let Err(e) = run(cli.cmd) {
+        eprintln!("Error: {}", e);
+        std::process::exit(1);
+    }
+}
 
-    match cli.cmd {
+fn run(cmd: Commands) -> Result<(), String> {
+    match cmd {
         Commands::Sha256 { input } => println!("{}", hash_sha256(&input)),
         Commands::Keccak256 { input } => println!("{}", hash_keccak256(&input)),
         Commands::Blake3 { input } => println!("{}", hash_blake3(&input)),
@@ -43,9 +49,10 @@ fn main() {
             };
             match result {
                 Ok(h) => println!("{}", h),
-                Err(e) => eprintln!("Error: {}", e),
+                Err(e) => return Err(e.to_string()),
             }
         }
         Commands::Salt { length } => println!("{}", generate_salt(length)),
     }
+    Ok(())
 }
