@@ -1,3 +1,4 @@
+pub mod args;
 pub mod constants;
 pub mod file_hasher;
 pub mod random_salt;
