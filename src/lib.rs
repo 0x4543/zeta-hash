@@ -1,3 +1,4 @@
+pub mod constants;
 pub mod file_hasher;
 pub mod random_salt;
 pub mod string_hasher;
