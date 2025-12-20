@@ -1,32 +1,6 @@
-use clap::{Parser, Subcommand, ValueEnum};
+use clap::Parser;
+use zeta_hash::args::{Cli, Commands, Algorithm};
 use zeta_hash::{hash_sha256, hash_keccak256, hash_blake3, FileHasher, generate_salt};
-
-#[derive(Parser)]
-#[command(name = "zeta-hash", version, about = "CLI tool for hashing strings and files")]
-struct Cli {
-    #[command(subcommand)]
-    cmd: Commands,
-}
-
-#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
-enum Algorithm {
-    Sha256,
-    Keccak256,
-    Blake3,
-}
-
-#[derive(Subcommand)]
-enum Commands {
-    Sha256 { input: String },
-    Keccak256 { input: String },
-    Blake3 { input: String },
-    File {
-        path: String,
-        #[arg(value_enum)]
-        algo: Algorithm,
-    },
-    Salt { length: usize },
-}
 
 fn main() {
     let cli = Cli::parse();
