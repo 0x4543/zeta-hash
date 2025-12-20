@@ -47,3 +47,30 @@ impl FileHasher {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::io::Write;
+
+    #[test]
+    fn test_file_hashing_flow() {
+        let path = "test_temp_file.txt";
+        let content = b"zeta-hash-test-content";
+
+        {
+            let mut file = File::create(path).unwrap();
+            file.write_all(content).unwrap();
+        }
+
+        let sha256 = FileHasher::hash_file_sha256(path);
+        let keccak = FileHasher::hash_file_keccak256(path);
+        let blake3 = FileHasher::hash_file_blake3(path);
+
+        let _ = std::fs::remove_file(path);
+
+        assert!(sha256.is_ok());
+        assert!(keccak.is_ok());
+        assert!(blake3.is_ok());
+    }
+}
