@@ -1,6 +1,6 @@
 use clap::Parser;
 use zeta_hash::args::{Cli, Commands};
-use zeta_hash::{hash_sha256, hash_keccak256, hash_blake3, FileHasher, generate_salt, Algorithm};
+use zeta_hash::{hash_sha256, hash_keccak256, hash_blake3, FileHasher, generate_salt, Algorithm, ZetaError};
 
 fn main() {
     let cli = Cli::parse();
@@ -10,7 +10,7 @@ fn main() {
     }
 }
 
-fn run(cmd: Commands) -> Result<(), String> {
+fn run(cmd: Commands) -> Result<(), ZetaError> {
     match cmd {
         Commands::Sha256 { input } => println!("{}", hash_sha256(&input)),
         Commands::Keccak256 { input } => println!("{}", hash_keccak256(&input)),
@@ -21,10 +21,8 @@ fn run(cmd: Commands) -> Result<(), String> {
                 Algorithm::Keccak256 => FileHasher::hash_file_keccak256(&path),
                 Algorithm::Blake3 => FileHasher::hash_file_blake3(&path),
             };
-            match result {
-                Ok(h) => println!("{}", h),
-                Err(e) => return Err(e.to_string()),
-            }
+            let hash = result?;
+            println!("{}", hash);
         }
         Commands::Salt { length } => println!("{}", generate_salt(length)),
     }
