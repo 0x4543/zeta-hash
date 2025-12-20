@@ -9,42 +9,30 @@ pub struct FileHasher;
 
 impl FileHasher {
     pub fn hash_file_sha256(path: &str) -> Result<String> {
-        let mut file = File::open(path)?;
         let mut hasher = Sha256::new();
-        let mut buffer = [0u8; 4096];
-
-        loop {
-            let n = file.read(&mut buffer)?;
-            if n == 0 {
-                break;
-            }
-            hasher.update(&buffer[..n]);
-        }
-
+        Self::process_file(path, |data| hasher.update(data))?;
         Ok(hex::encode(hasher.finalize()))
     }
 
     pub fn hash_file_keccak256(path: &str) -> Result<String> {
-        let mut file = File::open(path)?;
         let mut keccak = Keccak::v256();
-        let mut buffer = [0u8; 4096];
-
-        loop {
-            let n = file.read(&mut buffer)?;
-            if n == 0 {
-                break;
-            }
-            keccak.update(&buffer[..n]);
-        }
-
+        Self::process_file(path, |data| keccak.update(data))?;
         let mut output = [0u8; 32];
         keccak.finalize(&mut output);
         Ok(hex::encode(output))
     }
 
     pub fn hash_file_blake3(path: &str) -> Result<String> {
-        let mut file = File::open(path)?;
         let mut hasher = blake3::Hasher::new();
+        Self::process_file(path, |data| { hasher.update(data); })?;
+        Ok(hasher.finalize().to_hex().to_string())
+    }
+
+    fn process_file<F>(path: &str, mut updater: F) -> Result<()>
+    where
+        F: FnMut(&[u8]),
+    {
+        let mut file = File::open(path)?;
         let mut buffer = [0u8; 4096];
 
         loop {
@@ -52,9 +40,8 @@ impl FileHasher {
             if n == 0 {
                 break;
             }
-            hasher.update(&buffer[..n]);
+            updater(&buffer[..n]);
         }
-
-        Ok(hasher.finalize().to_hex().to_string())
+        Ok(())
     }
 }
