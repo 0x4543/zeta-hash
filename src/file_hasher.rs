@@ -4,6 +4,7 @@ use sha2::{Digest, Sha256};
 use tiny_keccak::{Hasher, Keccak};
 use blake3;
 use hex;
+use crate::constants::BUFFER_SIZE;
 
 pub struct FileHasher;
 
@@ -33,7 +34,7 @@ impl FileHasher {
         F: FnMut(&[u8]),
     {
         let mut file = File::open(path)?;
-        let mut buffer = [0u8; 4096];
+        let mut buffer = [0u8; BUFFER_SIZE];
 
         loop {
             let n = file.read(&mut buffer)?;
