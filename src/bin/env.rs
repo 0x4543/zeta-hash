@@ -7,5 +7,9 @@ fn main() {
 
     println!("crypto-hash version: {}", env!("CARGO_PKG_VERSION"));
     println!("Rust compiler: {}", rustc.trim());
-    println!("Platform: {} {}", std::env::consts::OS, std::env::consts::ARCH);
+    println!(
+        "Platform: {} {}",
+        std::env::consts::OS,
+        std::env::consts::ARCH
+    );
 }

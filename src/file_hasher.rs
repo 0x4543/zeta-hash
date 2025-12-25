@@ -1,12 +1,12 @@
+use crate::constants::BUFFER_SIZE;
+use crate::error::ZetaError;
+use blake3;
+use hex;
+use sha2::{Digest, Sha256};
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
-use sha2::{Digest, Sha256};
 use tiny_keccak::{Hasher, Keccak};
-use blake3;
-use hex;
-use crate::constants::BUFFER_SIZE;
-use crate::error::ZetaError;
 
 pub struct FileHasher;
 
@@ -27,7 +27,9 @@ impl FileHasher {
 
     pub fn hash_file_blake3<P: AsRef<Path>>(path: P) -> Result<String, ZetaError> {
         let mut hasher = blake3::Hasher::new();
-        Self::process_file(path, |data| { hasher.update(data); })?;
+        Self::process_file(path, |data| {
+            hasher.update(data);
+        })?;
         Ok(hasher.finalize().to_hex().to_string())
     }
 

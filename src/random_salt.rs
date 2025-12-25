@@ -1,5 +1,5 @@
-use rand::Rng;
 use crate::constants::SALT_CHARSET;
+use rand::Rng;
 
 pub fn generate_salt(len: usize) -> String {
     let mut rng = rand::thread_rng();

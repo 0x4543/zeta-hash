@@ -1,7 +1,7 @@
-use sha2::{Digest, Sha256};
-use tiny_keccak::{Hasher, Keccak};
 use blake3;
 use hex;
+use sha2::{Digest, Sha256};
+use tiny_keccak::{Hasher, Keccak};
 
 pub fn hash_sha256<D: AsRef<[u8]>>(input: D) -> String {
     let mut hasher = Sha256::new();
