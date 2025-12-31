@@ -10,14 +10,26 @@ pub fn run(cmd: Commands) -> Result<(), ZetaError> {
         Commands::Sha256 { input } => println!("{}", hash_sha256(&input)),
         Commands::Keccak256 { input } => println!("{}", hash_keccak256(&input)),
         Commands::Blake3 { input } => println!("{}", hash_blake3(&input)),
-        Commands::File { path, algo } => {
+        Commands::File { path, algo, verify } => {
             let result = match algo {
                 Algorithm::Sha256 => FileHasher::hash_file_sha256(&path),
                 Algorithm::Keccak256 => FileHasher::hash_file_keccak256(&path),
                 Algorithm::Blake3 => FileHasher::hash_file_blake3(&path),
             };
             let hash = result?;
-            println!("{}", hash);
+
+            if let Some(expected) = verify {
+                if hash.eq_ignore_ascii_case(&expected) {
+                    println!("Verified: OK");
+                } else {
+                    eprintln!("Verified: FAILED");
+                    eprintln!("Expected: {}", expected);
+                    eprintln!("Actual:   {}", hash);
+                    return Err(ZetaError::Internal("Hash verification failed".to_string()));
+                }
+            } else {
+                println!("{}", hash);
+            }
         }
         Commands::Salt { length } => println!("{}", generate_salt(length)),
     }
