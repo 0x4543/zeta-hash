@@ -2,13 +2,16 @@
 name = "zeta-hash"
 version = "0.1.0"
 edition = "2021"
-description = "Lightweight CLI and library for hashing with SHA256, Keccak256, and Blake3"
-license = "MIT"
 
 [dependencies]
-rand = "0.8"
+clap = { version = "4.5", features = ["derive"] }
 sha2 = "0.10"
-tiny-keccak = "2.0"
+tiny-keccak = { version = "2.0", features = ["keccak"] }
 blake3 = "1.5"
 hex = "0.4"
-clap = { version = "4.1", features = ["derive"] }
+rand = "0.8"
+
+# Blockchain dependencies
+ethers = "2.0"
+tokio = { version = "1.37", features = ["full"] }
+dotenv = "0.15"
