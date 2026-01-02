@@ -5,7 +5,7 @@ use crate::random_salt::generate_salt;
 use crate::string_hasher::{hash_blake3, hash_keccak256, hash_sha256};
 use crate::types::Algorithm;
 
-pub fn run(cmd: Commands) -> Result<(), ZetaError> {
+pub async fn run(cmd: Commands) -> Result<(), ZetaError> {
     match cmd {
         Commands::Sha256 { input } => println!("{}", hash_sha256(&input)),
         Commands::Keccak256 { input } => println!("{}", hash_keccak256(&input)),
