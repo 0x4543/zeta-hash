@@ -21,4 +21,13 @@ pub enum Commands {
         verify: Option<String>,
     },
     Salt { length: usize },
+    Base {
+        #[command(subcommand)]
+        cmd: BaseCommands,
+    },
+}
+
+#[derive(Subcommand)]
+pub enum BaseCommands {
+    BlockNumber,
 }

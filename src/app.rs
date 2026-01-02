@@ -1,4 +1,6 @@
-use crate::args::Commands;
+use std::env;
+use crate::args::{BaseCommands, Commands};
+use crate::base_client::BaseClient;
 use crate::error::ZetaError;
 use crate::file_hasher::FileHasher;
 use crate::random_salt::generate_salt;
@@ -32,6 +34,19 @@ pub async fn run(cmd: Commands) -> Result<(), ZetaError> {
             }
         }
         Commands::Salt { length } => println!("{}", generate_salt(length)),
+        Commands::Base { cmd } => {
+            let rpc_url = env::var("BASE_RPC_URL")
+                .unwrap_or_else(|_| "https://mainnet.base.org".to_string());
+            
+            let client = BaseClient::new(&rpc_url)?;
+            
+            match cmd {
+                BaseCommands::BlockNumber => {
+                    let bn = client.get_block_number().await?;
+                    println!("Base Mainnet Block: {}", bn);
+                }
+            }
+        }
     }
     Ok(())
 }
