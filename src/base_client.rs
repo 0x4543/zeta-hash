@@ -1,5 +1,7 @@
 use ethers::prelude::*;
+use ethers::utils::format_ether;
 use std::convert::TryFrom;
+use std::str::FromStr;
 use std::sync::Arc;
 use crate::error::ZetaError;
 
@@ -20,5 +22,15 @@ impl BaseClient {
         let block = self.provider.get_block_number().await
             .map_err(|e| ZetaError::Internal(format!("Provider error: {}", e)))?;
         Ok(block.as_u64())
+    }
+
+    pub async fn get_balance(&self, address: &str) -> Result<String, ZetaError> {
+        let addr = Address::from_str(address)
+            .map_err(|e| ZetaError::Internal(format!("Invalid address format: {}", e)))?;
+        
+        let balance = self.provider.get_balance(addr, None).await
+            .map_err(|e| ZetaError::Internal(format!("Provider error: {}", e)))?;
+            
+        Ok(format!("{}", format_ether(balance)))
     }
 }

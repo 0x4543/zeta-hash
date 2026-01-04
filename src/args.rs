@@ -30,4 +30,5 @@ pub enum Commands {
 #[derive(Subcommand)]
 pub enum BaseCommands {
     BlockNumber,
+    Balance { address: String },
 }
