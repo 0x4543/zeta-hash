@@ -1,5 +1,5 @@
 use ethers::prelude::*;
-use ethers::utils::format_ether;
+use ethers::utils::{format_ether, format_units};
 use std::convert::TryFrom;
 use std::str::FromStr;
 use std::sync::Arc;
@@ -32,5 +32,15 @@ impl BaseClient {
             .map_err(|e| ZetaError::Internal(format!("Provider error: {}", e)))?;
             
         Ok(format!("{}", format_ether(balance)))
+    }
+
+    pub async fn get_gas_price(&self) -> Result<String, ZetaError> {
+        let gas = self.provider.get_gas_price().await
+            .map_err(|e| ZetaError::Internal(format!("Provider error: {}", e)))?;
+        
+        let gwei = format_units(gas, "gwei")
+            .map_err(|e| ZetaError::Internal(format!("Format error: {}", e)))?;
+            
+        Ok(format!("{}", gwei))
     }
 }

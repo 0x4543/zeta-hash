@@ -31,4 +31,5 @@ pub enum Commands {
 pub enum BaseCommands {
     BlockNumber,
     Balance { address: String },
+    GasPrice,
 }

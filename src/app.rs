@@ -49,6 +49,10 @@ pub async fn run(cmd: Commands) -> Result<(), ZetaError> {
                     let balance = client.get_balance(&address).await?;
                     println!("Balance: {} ETH", balance);
                 }
+                BaseCommands::GasPrice => {
+                    let gas = client.get_gas_price().await?;
+                    println!("Current Gas Price: {} Gwei", gas);
+                }
             }
         }
     }
