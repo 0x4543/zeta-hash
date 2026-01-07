@@ -43,4 +43,14 @@ impl BaseClient {
             
         Ok(format!("{}", gwei))
     }
+
+    pub async fn get_transaction_count(&self, address: &str) -> Result<u64, ZetaError> {
+        let addr = Address::from_str(address)
+            .map_err(|e| ZetaError::Internal(format!("Invalid address format: {}", e)))?;
+
+        let nonce = self.provider.get_transaction_count(addr, None).await
+            .map_err(|e| ZetaError::Internal(format!("Provider error: {}", e)))?;
+
+        Ok(nonce.as_u64())
+    }
 }

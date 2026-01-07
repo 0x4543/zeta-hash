@@ -53,6 +53,10 @@ pub async fn run(cmd: Commands) -> Result<(), ZetaError> {
                     let gas = client.get_gas_price().await?;
                     println!("Current Gas Price: {} Gwei", gas);
                 }
+                BaseCommands::Nonce { address } => {
+                    let nonce = client.get_transaction_count(&address).await?;
+                    println!("Nonce (Transaction Count): {}", nonce);
+                }
             }
         }
     }
