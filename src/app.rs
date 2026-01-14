@@ -57,6 +57,10 @@ pub async fn run(cmd: Commands) -> Result<(), ZetaError> {
                     let nonce = client.get_transaction_count(&address).await?;
                     println!("Nonce (Transaction Count): {}", nonce);
                 }
+                BaseCommands::TxStatus { hash } => {
+                    let status = client.get_tx_status(&hash).await?;
+                    println!("{}", status);
+                }
             }
         }
     }

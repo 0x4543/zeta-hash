@@ -33,4 +33,5 @@ pub enum BaseCommands {
     Balance { address: String },
     GasPrice,
     Nonce { address: String },
+    TxStatus { hash: String },
 }

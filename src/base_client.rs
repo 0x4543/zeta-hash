@@ -53,4 +53,30 @@ impl BaseClient {
 
         Ok(nonce.as_u64())
     }
+
+    pub async fn get_tx_status(&self, hash: &str) -> Result<String, ZetaError> {
+        let tx_hash = H256::from_str(hash)
+            .map_err(|e| ZetaError::Internal(format!("Invalid transaction hash: {}", e)))?;
+
+        let receipt = self.provider.get_transaction_receipt(tx_hash).await
+            .map_err(|e| ZetaError::Internal(format!("Provider error: {}", e)))?;
+
+        match receipt {
+            Some(r) => {
+                let status = match r.status {
+                    Some(s) if s.as_u64() == 1 => "Success",
+                    Some(_) => "Failed",
+                    None => "Unknown",
+                };
+                let gas_used = r.gas_used.unwrap_or_default();
+                let block = r.block_number.unwrap_or_default();
+                
+                Ok(format!(
+                    "Status: {}\nBlock: {}\nGas Used: {}", 
+                    status, block, gas_used
+                ))
+            }
+            None => Ok("Transaction Pending or Not Found".to_string()),
+        }
+    }
 }
