@@ -35,10 +35,6 @@ pub async fn run(cmd: Commands) -> Result<(), ZetaError> {
         }
         Commands::Salt { length } => println!("{}", generate_salt(length)),
         Commands::Base { cmd } => {
-            // Для генерации кошелька RPC не нужен, но для других команд нужен
-            // Создаем клиент лениво или обрабатываем исключение, если RPC не нужен?
-            // Проще всего создать клиента, но если URL кривой, generate_wallet не сработает.
-            // Перенесем логику создания клиента ВНУТРЬ веток, где он нужен.
             
             match cmd {
                 BaseCommands::GenerateWallet => {
