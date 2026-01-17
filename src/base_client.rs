@@ -1,6 +1,6 @@
 use ethers::prelude::*;
 use ethers::signers::{LocalWallet, Signer};
-use ethers::utils::{format_ether, format_units};
+use ethers::utils::{format_ether, format_units, parse_ether};
 use std::convert::TryFrom;
 use std::str::FromStr;
 use std::sync::Arc;
@@ -86,5 +86,31 @@ impl BaseClient {
         let address = format!("{:?}", wallet.address());
         let priv_key = hex::encode(wallet.signer().to_bytes());
         (address, priv_key)
+    }
+
+    pub async fn send_eth(&self, private_key: &str, to: &str, amount_eth: &str) -> Result<String, ZetaError> {
+        let chain_id = self.provider.get_chainid().await
+            .map_err(|e| ZetaError::Internal(format!("Failed to get chain ID: {}", e)))?;
+
+        let wallet: LocalWallet = private_key.parse::<LocalWallet>()
+            .map_err(|e| ZetaError::Internal(format!("Invalid private key: {}", e)))?
+            .with_chain_id(chain_id.as_u64());
+
+        let client = SignerMiddleware::new(self.provider.clone(), wallet);
+
+        let to_addr = Address::from_str(to)
+            .map_err(|e| ZetaError::Internal(format!("Invalid TO address: {}", e)))?;
+
+        let value = parse_ether(amount_eth)
+            .map_err(|e| ZetaError::Internal(format!("Invalid amount: {}", e)))?;
+
+        let tx = TransactionRequest::new()
+            .to(to_addr)
+            .value(value);
+
+        let pending_tx = client.send_transaction(tx, None).await
+            .map_err(|e| ZetaError::Internal(format!("Failed to send transaction: {}", e)))?;
+
+        Ok(format!("{:?}", pending_tx.tx_hash()))
     }
 }

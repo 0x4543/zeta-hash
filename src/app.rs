@@ -35,7 +35,6 @@ pub async fn run(cmd: Commands) -> Result<(), ZetaError> {
         }
         Commands::Salt { length } => println!("{}", generate_salt(length)),
         Commands::Base { cmd } => {
-            
             match cmd {
                 BaseCommands::GenerateWallet => {
                     let (addr, pk) = BaseClient::generate_wallet();
@@ -47,6 +46,7 @@ pub async fn run(cmd: Commands) -> Result<(), ZetaError> {
                 _ => {
                     let rpc_url = env::var("BASE_RPC_URL")
                         .unwrap_or_else(|_| "https://mainnet.base.org".to_string());
+                    
                     let client = BaseClient::new(&rpc_url)?;
 
                     match cmd {
@@ -69,6 +69,15 @@ pub async fn run(cmd: Commands) -> Result<(), ZetaError> {
                         BaseCommands::TxStatus { hash } => {
                             let status = client.get_tx_status(&hash).await?;
                             println!("{}", status);
+                        }
+                        BaseCommands::Send { to, amount } => {
+                            let pk = env::var("BASE_PRIVATE_KEY")
+                                .map_err(|_| ZetaError::Internal("BASE_PRIVATE_KEY env var not found".to_string()))?;
+                            
+                            println!("Sending {} ETH to {}...", amount, to);
+                            let tx_hash = client.send_eth(&pk, &to, &amount).await?;
+                            println!("Transaction Sent!");
+                            println!("Hash: {}", tx_hash);
                         }
                         BaseCommands::GenerateWallet => unreachable!(),
                     }

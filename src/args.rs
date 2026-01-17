@@ -35,4 +35,8 @@ pub enum BaseCommands {
     Nonce { address: String },
     TxStatus { hash: String },
     GenerateWallet,
+    Send { 
+        to: String, 
+        amount: String 
+    },
 }
