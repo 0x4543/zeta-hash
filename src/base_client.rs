@@ -1,4 +1,5 @@
 use ethers::prelude::*;
+use ethers::signers::{LocalWallet, Signer};
 use ethers::utils::{format_ether, format_units};
 use std::convert::TryFrom;
 use std::str::FromStr;
@@ -78,5 +79,12 @@ impl BaseClient {
             }
             None => Ok("Transaction Pending or Not Found".to_string()),
         }
+    }
+
+    pub fn generate_wallet() -> (String, String) {
+        let wallet = LocalWallet::new(&mut rand::thread_rng());
+        let address = format!("{:?}", wallet.address());
+        let priv_key = hex::encode(wallet.signer().to_bytes());
+        (address, priv_key)
     }
 }

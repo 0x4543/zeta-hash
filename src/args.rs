@@ -34,4 +34,5 @@ pub enum BaseCommands {
     GasPrice,
     Nonce { address: String },
     TxStatus { hash: String },
+    GenerateWallet,
 }
