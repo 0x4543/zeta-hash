@@ -79,6 +79,10 @@ pub async fn run(cmd: Commands) -> Result<(), ZetaError> {
                             println!("Transaction Sent!");
                             println!("Hash: {}", tx_hash);
                         }
+                        BaseCommands::Erc20Balance { token, address } => {
+                            let balance = client.get_erc20_balance(&token, &address).await?;
+                            println!("Balance: {}", balance);
+                        }
                         BaseCommands::GenerateWallet => unreachable!(),
                     }
                 }

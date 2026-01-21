@@ -6,6 +6,15 @@ use std::str::FromStr;
 use std::sync::Arc;
 use crate::error::ZetaError;
 
+abigen!(
+    Erc20,
+    r#"[
+        function balanceOf(address account) external view returns (uint256)
+        function decimals() external view returns (uint8)
+        function symbol() external view returns (string)
+    ]"#
+);
+
 pub struct BaseClient {
     provider: Arc<Provider<Http>>,
 }
@@ -112,5 +121,29 @@ impl BaseClient {
             .map_err(|e| ZetaError::Internal(format!("Failed to send transaction: {}", e)))?;
 
         Ok(format!("{:?}", pending_tx.tx_hash()))
+    }
+
+    pub async fn get_erc20_balance(&self, token_address: &str, wallet_address: &str) -> Result<String, ZetaError> {
+        let token_addr = Address::from_str(token_address)
+            .map_err(|e| ZetaError::Internal(format!("Invalid token address: {}", e)))?;
+        
+        let wallet_addr = Address::from_str(wallet_address)
+            .map_err(|e| ZetaError::Internal(format!("Invalid wallet address: {}", e)))?;
+
+        let contract = Erc20::new(token_addr, self.provider.clone());
+
+        let balance = contract.balance_of(wallet_addr).call().await
+            .map_err(|e| ZetaError::Internal(format!("Contract call failed: {}", e)))?;
+
+        let decimals = contract.decimals().call().await
+            .unwrap_or(18);
+
+        let symbol = contract.symbol().call().await
+            .unwrap_or_else(|_| "TOKEN".to_string());
+
+        let formatted = format_units(balance, decimals as u32)
+            .map_err(|e| ZetaError::Internal(format!("Format error: {}", e)))?;
+
+        Ok(format!("{} {}", formatted, symbol))
     }
 }

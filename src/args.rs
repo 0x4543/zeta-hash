@@ -39,4 +39,8 @@ pub enum BaseCommands {
         to: String, 
         amount: String 
     },
+    Erc20Balance {
+        token: String,
+        address: String,
+    },
 }
