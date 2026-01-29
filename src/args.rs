@@ -43,4 +43,9 @@ pub enum BaseCommands {
         token: String,
         address: String,
     },
+    SendErc20 {
+        token: String,
+        to: String,
+        amount: String,
+    },
 }
