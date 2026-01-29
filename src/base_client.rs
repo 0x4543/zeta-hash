@@ -1,6 +1,6 @@
 use ethers::prelude::*;
 use ethers::signers::{LocalWallet, Signer};
-use ethers::utils::{format_ether, format_units, parse_ether};
+use ethers::utils::{format_ether, format_units, parse_ether, parse_units};
 use std::convert::TryFrom;
 use std::str::FromStr;
 use std::sync::Arc;
@@ -12,6 +12,7 @@ abigen!(
         function balanceOf(address account) external view returns (uint256)
         function decimals() external view returns (uint8)
         function symbol() external view returns (string)
+        function transfer(address to, uint256 amount) external returns (bool)
     ]"#
 );
 
@@ -145,5 +146,35 @@ impl BaseClient {
             .map_err(|e| ZetaError::Internal(format!("Format error: {}", e)))?;
 
         Ok(format!("{} {}", formatted, symbol))
+    }
+
+    pub async fn send_erc20(&self, private_key: &str, token_address: &str, to: &str, amount: &str) -> Result<String, ZetaError> {
+        let chain_id = self.provider.get_chainid().await
+            .map_err(|e| ZetaError::Internal(format!("Failed to get chain ID: {}", e)))?;
+
+        let wallet: LocalWallet = private_key.parse::<LocalWallet>()
+            .map_err(|e| ZetaError::Internal(format!("Invalid private key: {}", e)))?
+            .with_chain_id(chain_id.as_u64());
+
+        let client = Arc::new(SignerMiddleware::new(self.provider.clone(), wallet));
+
+        let token_addr = Address::from_str(token_address)
+            .map_err(|e| ZetaError::Internal(format!("Invalid token address: {}", e)))?;
+
+        let to_addr = Address::from_str(to)
+            .map_err(|e| ZetaError::Internal(format!("Invalid TO address: {}", e)))?;
+
+        let contract = Erc20::new(token_addr, client);
+
+        let decimals = contract.decimals().call().await
+            .map_err(|e| ZetaError::Internal(format!("Failed to fetch decimals: {}", e)))?;
+
+        let amount_wei = parse_units(amount, decimals as u32)
+            .map_err(|e| ZetaError::Internal(format!("Invalid amount format: {}", e)))?;
+
+        let pending_tx = contract.transfer(to_addr, amount_wei.into()).send().await
+            .map_err(|e| ZetaError::Internal(format!("Failed to send transaction: {}", e)))?;
+
+        Ok(format!("{:?}", pending_tx.tx_hash()))
     }
 }

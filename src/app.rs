@@ -83,6 +83,15 @@ pub async fn run(cmd: Commands) -> Result<(), ZetaError> {
                             let balance = client.get_erc20_balance(&token, &address).await?;
                             println!("Balance: {}", balance);
                         }
+                        BaseCommands::SendErc20 { token, to, amount } => {
+                            let pk = env::var("BASE_PRIVATE_KEY")
+                                .map_err(|_| ZetaError::Internal("BASE_PRIVATE_KEY env var not found".to_string()))?;
+
+                            println!("Sending {} tokens to {}...", amount, to);
+                            let tx_hash = client.send_erc20(&pk, &token, &to, &amount).await?;
+                            println!("Transaction Sent!");
+                            println!("Hash: {}", tx_hash);
+                        }
                         BaseCommands::GenerateWallet => unreachable!(),
                     }
                 }
