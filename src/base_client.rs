@@ -172,11 +172,11 @@ impl BaseClient {
         let amount_wei = parse_units(amount, decimals as u32)
             .map_err(|e| ZetaError::Internal(format!("Invalid amount format: {}", e)))?;
 
-        let call = contract.transfer(to_addr, amount_wei);
+        let call = contract.transfer(to_addr, amount_wei.into());
         let pending_tx = call.send().await
             .map_err(|e| ZetaError::Internal(format!("Failed to send transaction: {}", e)))?;
 
-        let tx_hash = *pending_tx.tx_hash();
+        let tx_hash = pending_tx.tx_hash();
 
         Ok(format!("{:?}", tx_hash))
     }
