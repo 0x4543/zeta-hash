@@ -1,12 +1,8 @@
-use crate::types::Algorithm;
 use clap::{Parser, Subcommand};
+use crate::types::Algorithm;
 
 #[derive(Parser)]
-#[command(
-    name = "zeta-hash",
-    version,
-    about = "CLI tool for hashing strings and files"
-)]
+#[command(name = "zeta-hash", version, about = "CLI tool for hashing strings and files")]
 pub struct Cli {
     #[command(subcommand)]
     pub cmd: Commands,
@@ -14,15 +10,9 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 pub enum Commands {
-    Sha256 {
-        input: String,
-    },
-    Keccak256 {
-        input: String,
-    },
-    Blake3 {
-        input: String,
-    },
+    Sha256 { input: String },
+    Keccak256 { input: String },
+    Blake3 { input: String },
     File {
         path: String,
         #[arg(value_enum)]
@@ -30,9 +20,7 @@ pub enum Commands {
         #[arg(short, long)]
         verify: Option<String>,
     },
-    Salt {
-        length: usize,
-    },
+    Salt { length: usize },
     Base {
         #[command(subcommand)]
         cmd: BaseCommands,
@@ -42,20 +30,14 @@ pub enum Commands {
 #[derive(Subcommand)]
 pub enum BaseCommands {
     BlockNumber,
-    Balance {
-        address: String,
-    },
+    Balance { address: String },
     GasPrice,
-    Nonce {
-        address: String,
-    },
-    TxStatus {
-        hash: String,
-    },
+    Nonce { address: String },
+    TxStatus { hash: String },
     GenerateWallet,
-    Send {
-        to: String,
-        amount: String,
+    Send { 
+        to: String, 
+        amount: String 
     },
     Erc20Balance {
         token: String,
@@ -65,5 +47,13 @@ pub enum BaseCommands {
         token: String,
         to: String,
         amount: String,
+    },
+    Sign {
+        message: String,
+    },
+    Verify {
+        message: String,
+        signature: String,
+        address: String,
     },
 }
