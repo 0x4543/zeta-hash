@@ -106,6 +106,22 @@ pub async fn run(cmd: Commands) -> Result<(), ZetaError> {
                             let tx_hash = client.send_erc20(&pk, &token, &to, &amount).await?;
                             println!("Transaction Sent! Hash: {}", tx_hash);
                         }
+                        BaseCommands::Wrap { amount } => {
+                            let pk = env::var("BASE_PRIVATE_KEY")
+                                .map_err(|_| ZetaError::Internal("BASE_PRIVATE_KEY env var not found".to_string()))?;
+
+                            println!("Wrapping {} ETH to WETH...", amount);
+                            let tx_hash = client.wrap_eth(&pk, &amount).await?;
+                            println!("Transaction Sent! Hash: {}", tx_hash);
+                        }
+                        BaseCommands::Unwrap { amount } => {
+                            let pk = env::var("BASE_PRIVATE_KEY")
+                                .map_err(|_| ZetaError::Internal("BASE_PRIVATE_KEY env var not found".to_string()))?;
+
+                            println!("Unwrapping {} WETH to ETH...", amount);
+                            let tx_hash = client.unwrap_eth(&pk, &amount).await?;
+                            println!("Transaction Sent! Hash: {}", tx_hash);
+                        }
                         BaseCommands::GenerateWallet | 
                         BaseCommands::Sign { .. } | 
                         BaseCommands::Verify { .. } => unreachable!(),

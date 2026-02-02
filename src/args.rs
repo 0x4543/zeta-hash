@@ -56,4 +56,10 @@ pub enum BaseCommands {
         signature: String,
         address: String,
     },
+    Wrap {
+        amount: String,
+    },
+    Unwrap {
+        amount: String,
+    },
 }

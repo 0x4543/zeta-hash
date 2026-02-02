@@ -17,6 +17,14 @@ abigen!(
     ]"#
 );
 
+abigen!(
+    WethContract,
+    r#"[
+        function deposit() public payable
+        function withdraw(uint256 wad) public
+    ]"#
+);
+
 pub struct BaseClient {
     provider: Arc<Provider<Http>>,
 }
@@ -203,5 +211,51 @@ impl BaseClient {
             .map_err(|e| ZetaError::Internal(format!("Invalid address format: {}", e)))?;
 
         Ok(recovered == expected)
+    }
+
+    pub async fn wrap_eth(&self, private_key: &str, amount_eth: &str) -> Result<String, ZetaError> {
+        let chain_id = self.provider.get_chainid().await
+            .map_err(|e| ZetaError::Internal(format!("Failed to get chain ID: {}", e)))?;
+
+        let wallet: LocalWallet = private_key.parse::<LocalWallet>()
+            .map_err(|e| ZetaError::Internal(format!("Invalid private key: {}", e)))?
+            .with_chain_id(chain_id.as_u64());
+
+        let client = Arc::new(SignerMiddleware::new(self.provider.clone(), wallet));
+        
+        let weth_addr = Address::from_str("0x4200000000000000000000000000000000000006").unwrap();
+        let contract = WethContract::new(weth_addr, client);
+
+        let value = parse_ether(amount_eth)
+            .map_err(|e| ZetaError::Internal(format!("Invalid amount: {}", e)))?;
+
+        let call = contract.deposit().value(value);
+        let pending_tx = call.send().await
+            .map_err(|e| ZetaError::Internal(format!("Failed to send wrap tx: {}", e)))?;
+
+        Ok(format!("{:?}", pending_tx.tx_hash()))
+    }
+
+    pub async fn unwrap_eth(&self, private_key: &str, amount_weth: &str) -> Result<String, ZetaError> {
+        let chain_id = self.provider.get_chainid().await
+            .map_err(|e| ZetaError::Internal(format!("Failed to get chain ID: {}", e)))?;
+
+        let wallet: LocalWallet = private_key.parse::<LocalWallet>()
+            .map_err(|e| ZetaError::Internal(format!("Invalid private key: {}", e)))?
+            .with_chain_id(chain_id.as_u64());
+
+        let client = Arc::new(SignerMiddleware::new(self.provider.clone(), wallet));
+        
+        let weth_addr = Address::from_str("0x4200000000000000000000000000000000000006").unwrap();
+        let contract = WethContract::new(weth_addr, client);
+
+        let amount = parse_ether(amount_weth)
+            .map_err(|e| ZetaError::Internal(format!("Invalid amount: {}", e)))?;
+
+        let call = contract.withdraw(amount.into());
+        let pending_tx = call.send().await
+            .map_err(|e| ZetaError::Internal(format!("Failed to send unwrap tx: {}", e)))?;
+
+        Ok(format!("{:?}", pending_tx.tx_hash()))
     }
 }
