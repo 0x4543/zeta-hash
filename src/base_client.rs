@@ -258,4 +258,25 @@ impl BaseClient {
 
         Ok(format!("{:?}", pending_tx.tx_hash()))
     }
+
+    pub async fn get_block_info(&self, block_number: Option<u64>) -> Result<String, ZetaError> {
+        let block_id = match block_number {
+            Some(n) => BlockId::Number(BlockNumber::Number(n.into())),
+            None => BlockId::Number(BlockNumber::Latest),
+        };
+
+        let block = self.provider.get_block(block_id).await
+            .map_err(|e| ZetaError::Internal(format!("Provider error: {}", e)))?
+            .ok_or_else(|| ZetaError::Internal("Block not found".to_string()))?;
+
+        let number = block.number.unwrap_or_default();
+        let hash = block.hash.unwrap_or_default();
+        let timestamp = block.timestamp;
+        let tx_count = block.transactions.len();
+
+        Ok(format!(
+            "Block Number: {}\nHash: {:?}\nTimestamp: {}\nTransactions: {}", 
+            number, hash, timestamp, tx_count
+        ))
+    }
 }

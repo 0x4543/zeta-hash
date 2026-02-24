@@ -30,6 +30,9 @@ pub enum Commands {
 #[derive(Subcommand)]
 pub enum BaseCommands {
     BlockNumber,
+    BlockInfo {
+        number: Option<u64>,
+    },
     Balance { address: String },
     GasPrice,
     Nonce { address: String },

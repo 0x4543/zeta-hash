@@ -70,6 +70,10 @@ pub async fn run(cmd: Commands) -> Result<(), ZetaError> {
                             let bn = client.get_block_number().await?;
                             println!("Base Mainnet Block: {}", bn);
                         }
+                        BaseCommands::BlockInfo { number } => {
+                            let info = client.get_block_info(number).await?;
+                            println!("{}", info);
+                        }
                         BaseCommands::Balance { address } => {
                             let balance = client.get_balance(&address).await?;
                             println!("Balance: {} ETH", balance);
