@@ -65,4 +65,10 @@ pub enum BaseCommands {
     Unwrap {
         amount: String,
     },
+    Checksum {
+        address: String,
+    },
+    GetCode {
+        address: String,
+    },
 }

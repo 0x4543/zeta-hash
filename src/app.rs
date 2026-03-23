@@ -59,6 +59,10 @@ pub async fn run(cmd: Commands) -> Result<(), ZetaError> {
                         println!("Signature Valid: NO");
                     }
                 }
+                BaseCommands::Checksum { address } => {
+                    let checksummed = BaseClient::checksum_address(&address)?;
+                    println!("Checksummed Address: {}", checksummed);
+                }
                 _ => {
                     let rpc_url = env::var("BASE_RPC_URL")
                         .unwrap_or_else(|_| "https://mainnet.base.org".to_string());
@@ -89,6 +93,14 @@ pub async fn run(cmd: Commands) -> Result<(), ZetaError> {
                         BaseCommands::TxStatus { hash } => {
                             let status = client.get_tx_status(&hash).await?;
                             println!("{}", status);
+                        }
+                        BaseCommands::GetCode { address } => {
+                            let code = client.get_code(&address).await?;
+                            if code == "0x" {
+                                println!("Address {} is an EOA (No code)", address);
+                            } else {
+                                println!("Contract Code: {}", code);
+                            }
                         }
                         BaseCommands::Send { to, amount } => {
                             let pk = env::var("BASE_PRIVATE_KEY")
@@ -128,7 +140,8 @@ pub async fn run(cmd: Commands) -> Result<(), ZetaError> {
                         }
                         BaseCommands::GenerateWallet | 
                         BaseCommands::Sign { .. } | 
-                        BaseCommands::Verify { .. } => unreachable!(),
+                        BaseCommands::Verify { .. } |
+                        BaseCommands::Checksum { .. } => unreachable!(),
                     }
                 }
             }

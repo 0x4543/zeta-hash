@@ -1,7 +1,7 @@
 use ethers::prelude::*;
 use ethers::signers::{LocalWallet, Signer};
 use ethers::types::Signature;
-use ethers::utils::{format_ether, format_units, parse_ether, parse_units};
+use ethers::utils::{format_ether, format_units, parse_ether, parse_units, to_checksum};
 use std::convert::TryFrom;
 use std::str::FromStr;
 use std::sync::Arc;
@@ -278,5 +278,21 @@ impl BaseClient {
             "Block Number: {}\nHash: {:?}\nTimestamp: {}\nTransactions: {}", 
             number, hash, timestamp, tx_count
         ))
+    }
+
+    pub fn checksum_address(address: &str) -> Result<String, ZetaError> {
+        let addr = Address::from_str(address)
+            .map_err(|e| ZetaError::Internal(format!("Invalid address format: {}", e)))?;
+        Ok(to_checksum(&addr, None))
+    }
+
+    pub async fn get_code(&self, address: &str) -> Result<String, ZetaError> {
+        let addr = Address::from_str(address)
+            .map_err(|e| ZetaError::Internal(format!("Invalid address format: {}", e)))?;
+        
+        let code = self.provider.get_code(addr, None).await
+            .map_err(|e| ZetaError::Internal(format!("Provider error: {}", e)))?;
+
+        Ok(format!("{}", code))
     }
 }
